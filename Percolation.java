@@ -16,28 +16,39 @@ public class Percolation {
         numberOfOpenSites = 0;
         for(int i=0;i<openOrNot.length;i++){
             openOrNot[i]=false;
-            if(i<n){
-                UF.union(0,i+1);
-            }
-            if(i>n*(n-1)){
-                UF.union((n*n)+1, i);
-            }
         }
     } 
 
     public void open(int row, int col){
-        if(!openOrNot[convertIndex(row, col)-1]){
-            unionNBRS(row,col);
+        if(convertIndex(row, col)<1){
+            throw new IllegalArgumentException();
+        }
+        if(!isOpen(row, col)){
             openOrNot[convertIndex(row, col)-1]=true;
+            // connecting to top virtual site if top row element is open
+            if(convertIndex(row, col)<=N){
+                UF.union(0,convertIndex(row, col));
+            }
+            // connecting to down virtual site if last row element is open
+            if(convertIndex(row, col)>N*(N-1)){
+                UF.union((N*N)+1,convertIndex(row, col));
+            }
+            unionNBRS(row,col);
             numberOfOpenSites++;
         }     
     }
 
     public boolean isOpen(int row , int col){
+           if(convertIndex(row, col)<1){
+            throw new IllegalArgumentException();
+        }
         return openOrNot[convertIndex(row, col)-1];
     }
 
     public boolean isFull(int row , int col){
+           if(convertIndex(row, col)<1){
+            throw new IllegalArgumentException();
+        }
         return UF.find(convertIndex(row, col))==UF.find(0);
     }
 
@@ -46,7 +57,7 @@ public class Percolation {
     }
 
     public boolean percolates(){
-        return UF.find(N*N+2)==UF.find(0);
+        return UF.find(N*N+1)==UF.find(0);
     }
 
     private void unionNBRS(int row , int col){
@@ -78,7 +89,7 @@ public class Percolation {
     }
 
     private boolean checkLeft(int row, int col){
-        if(convertIndex(row, col)-1>=(5*(row-1))+1){
+        if(convertIndex(row, col)-1>=(N*(row-1))+1){
             if(isOpen(row, col-1)){
                 return true;
             }    
@@ -87,7 +98,7 @@ public class Percolation {
     }
 
     private boolean checkUp(int row,int col){
-        if(convertIndex(row, col)-5>=1){
+        if(convertIndex(row, col)-N >= 1){
             if(isOpen(row-1, col)){
                 return true;
             }    
@@ -96,12 +107,14 @@ public class Percolation {
     }
 
     private boolean checkDown(int row , int col){
-        if(convertIndex(row, col)+5>=N*N){
+        if(convertIndex(row, col) + N <= N*N){
             if(isOpen(row+1, col))
             return true;
         }
         return false;
     }
 
-
+    public static void main(String[] args) {
+        Percolation per = new Percolation(6);
+    }
 }
