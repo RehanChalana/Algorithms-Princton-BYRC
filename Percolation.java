@@ -1,6 +1,7 @@
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
@@ -10,6 +11,9 @@ public class Percolation {
     private int numberOfOpenSites;
 
     public Percolation(int n){
+        if(n<1){
+            throw new IllegalArgumentException();
+        }
         this.N=n;
         this.UF = new WeightedQuickUnionUF((n*n)+2);
         this.openOrNot = new boolean[n*n];
@@ -20,7 +24,10 @@ public class Percolation {
     } 
 
     public void open(int row, int col){
-        if(convertIndex(row, col)<1){
+        if(row<1 || col<1 || row>N || col>N){
+            throw new IllegalArgumentException();
+        }
+        if(convertIndex(row, col)<1 || convertIndex(row, col)>N*N+1){
             throw new IllegalArgumentException();
         }
         if(!isOpen(row, col)){
@@ -39,14 +46,20 @@ public class Percolation {
     }
 
     public boolean isOpen(int row , int col){
-           if(convertIndex(row, col)<1){
+        if(row<1 || col<1 || row>N || col>N){
+            throw new IllegalArgumentException();
+        }
+           if(convertIndex(row, col)<1 || convertIndex(row, col)>N*N+1){
             throw new IllegalArgumentException();
         }
         return openOrNot[convertIndex(row, col)-1];
     }
 
     public boolean isFull(int row , int col){
-           if(convertIndex(row, col)<1){
+        if(row<1 || col<1 || row>N || col>N){
+            throw new IllegalArgumentException();
+        }
+           if(convertIndex(row, col)<1 || convertIndex(row, col)>N*N+1){
             throw new IllegalArgumentException();
         }
         return UF.find(convertIndex(row, col))==UF.find(0);
@@ -68,10 +81,10 @@ public class Percolation {
             UF.union(convertIndex(row, col),convertIndex(row, col)-1);
         }
         if(checkUp(row,col)){
-           UF.union(convertIndex(row, col),convertIndex(row, col)-5); 
+           UF.union(convertIndex(row, col),convertIndex(row, col)-N); 
         }
         if(checkDown(row,col)){
-            UF.union(convertIndex(row, col),convertIndex(row, col)+5); 
+            UF.union(convertIndex(row, col),convertIndex(row, col)+N); 
         }
     }
 
@@ -114,7 +127,26 @@ public class Percolation {
         return false;
     }
 
+    private void printUF(){
+        System.out.println(UF.find(0));
+        for(int i=1;i<=N;i++){
+            for(int j=1;j<=N;j++){
+                System.out.print(UF.find(convertIndex(i, j))+" ");
+            }
+            System.out.println();
+        }
+        System.out.println(UF.find(N*N+1));
+    }
+
     public static void main(String[] args) {
-        Percolation per = new Percolation(6);
+        Percolation per = new Percolation(4);
+        per.open(1,1);
+        per.open(2,1);
+        per.open(2, 2);
+        per.open(3,2);
+        per.open(4, 2);
+        per.open(4, 3);
+        per.printUF();
+        System.out.println(per.percolates());
     }
 }
