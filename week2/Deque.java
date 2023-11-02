@@ -89,8 +89,10 @@ public class Deque<Item> implements Iterable<Item> {
             throw new java.util.NoSuchElementException();
         }
         if(N==1){
+            Item rItem = last.item;
             last.next = null;
             N--; 
+            return rItem;
         }
         Node remLast = last;
         last.back.next = null;
@@ -117,7 +119,7 @@ public class Deque<Item> implements Iterable<Item> {
         }
 
         public void remove(){
-
+            throw new UnsupportedOperationException();
         }
     }
 
@@ -129,24 +131,6 @@ public class Deque<Item> implements Iterable<Item> {
      // unit testing (required)
     public static void main(String[] args){
         Deque<Integer> intDeque = new Deque<Integer>();
-        intDeque.addLast(2);
-        // intDeque.addFirst(3);
-        // intDeque.addFirst(5);
-        intDeque.printTest();
-        // intDeque.addFirst(3);
-        // intDeque.addFirst(5);
-        // intDeque.addLast(10);
-        // intDeque.removeLast();
-        // intDeque.removeFirst();
-        // intDeque.removeFirst();
-        // System.out.println(intDeque.removeFirst());
-        // intDeque.printTest();
-        // intDeque.printTest();
-        // System.out.println(intDeque.first == intDeque.last);
-
-        for(int i : intDeque){
-            System.out.println(i);
-        }
     }
 
 }
