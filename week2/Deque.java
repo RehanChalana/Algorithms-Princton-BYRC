@@ -125,12 +125,15 @@ public class Deque<Item> implements Iterable<Item> {
         }
 
         public Item next(){
-            // if(current.item==null){
-            //     throw new java.util.NoSuchElementException();
-            // }
             if(i==0){
+                if(current.item==null){
+                    throw new java.util.NoSuchElementException();
+                }
                 i++;
                 return current.item;
+            }
+            if(current.next==null){
+                throw new java.util.NoSuchElementException();
             }
             current = current.next;
             i++;
