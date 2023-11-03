@@ -1,12 +1,9 @@
 import edu.princeton.cs.algs4.StdRandom;
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.Iterator;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
     private Item[] rdqueue ; 
     private int N = 0;
-    private Item[] temp;
     // construct an empty randomized queue
     public RandomizedQueue(){
         rdqueue = (Item[]) new Object[1];
@@ -55,7 +52,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // return a random item (but do not remove it)
     public Item sample(){
-        return rdqueue[StdRandom.uniformInt(N+1)];
+        return rdqueue[StdRandom.uniformInt(N)];
     }
 
     // return an independent iterator over items in random order
@@ -63,24 +60,36 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         return new RandomArrayIterator();
     }
 
-    private class RandomArrayIterator implements Iterator<Item>{
-        // int i=0;
-        // int b = StdRandom.u
-        // this.temp = rdqueue;
-        // StdRandom.shuffle(temp);
-        // public boolean hasNext(){
-        //     return i==temp.length;
-        // }
+    private class RandomArrayIterator implements Iterator<Item> {
+        Item[] temp = (Item[]) new Object[N];
+        int count = 0;
+        public RandomArrayIterator(){
+            for(int i=0;i<N;i++){
+            temp[i]=rdqueue[i];
+        }
+        StdRandom.shuffle(temp);
+        }
+        
 
-        // public Item next(){
-        //     return temp[i++];
-        // }
+        public boolean hasNext(){
+            return count!=temp.length;
+        }
 
+        public Item next(){
+            return temp[count++];
+        }
     }
 
     // unit testing (required)
     public static void main(String[] args){
-
+        RandomizedQueue<Integer> rq = new RandomizedQueue<>();
+        rq.enqueue(1);
+        rq.enqueue(5);
+        rq.enqueue(7);
+        rq.enqueue(9);
+        rq.enqueue(10);
+        rq.enqueue(15);
+        System.out.println(rq.sample());
     }
 
 }
