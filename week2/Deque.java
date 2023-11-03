@@ -72,8 +72,10 @@ public class Deque<Item> implements Iterable<Item> {
             throw new java.util.NoSuchElementException();
         }
         if(N==1){
+            Item rItem = first.item;
+            first.item = null;
             N--;
-            return first.item;
+            return rItem;
         }
         Item removedFirstItem = first.item;
         first = first.next;
@@ -95,12 +97,15 @@ public class Deque<Item> implements Iterable<Item> {
             throw new java.util.NoSuchElementException();
         }
         if(N==1){
+            Item rItem = last.item;
+            last.item = null;
             N--; 
-            return last.item;
+            return rItem;
         }
         Node remLast = last;
         last.back.next = null;
         last = remLast.back;
+        N--;
         return remLast.item;
     }
 
@@ -111,18 +116,25 @@ public class Deque<Item> implements Iterable<Item> {
 
     private class DequeIterator implements Iterator<Item>{
         private Node current = first;
-
+        private int i = 0;
         public boolean hasNext(){
-            return current != null;
+                if(i==0){
+                    return current.item!=null;
+                }
+                return current.next!=null;
         }
 
         public Item next(){
-            if(current==null){
-                throw new java.util.NoSuchElementException();
+            // if(current.item==null){
+            //     throw new java.util.NoSuchElementException();
+            // }
+            if(i==0){
+                i++;
+                return current.item;
             }
-            Item item = current.item;
             current = current.next;
-            return item;
+            i++;
+            return current.item;
         }
 
         public void remove(){
@@ -139,11 +151,12 @@ public class Deque<Item> implements Iterable<Item> {
     public static void main(String[] args){
         Deque<Integer> intDeque = new Deque<Integer>();
         intDeque.addFirst(1);
+        intDeque.addLast(4);
         intDeque.removeLast();
-        intDeque.addFirst(5);
-        intDeque.printTest();
-        System.out.println(intDeque.first.item);
-        // System.out.println(intDeque.isEmpty());
+        // intDeque.addFirst(5);
+        for(int i : intDeque){
+            System.out.println(i);
+        }
     }
 
 }
