@@ -113,6 +113,9 @@ public class Deque<Item> implements Iterable<Item> {
         }
 
         public Item next(){
+            if(current==null){
+                throw new java.util.NoSuchElementException();
+            }
             Item item = current.item;
             current = current.next;
             return item;
@@ -130,7 +133,7 @@ public class Deque<Item> implements Iterable<Item> {
     }
      // unit testing (required)
     public static void main(String[] args){
-        Deque<Integer> intDeque = new Deque<Integer>();
+        // Deque<Integer> intDeque = new Deque<Integer>();
     }
 
 }

@@ -76,6 +76,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         }
 
         public Item next(){
+            if(count==temp.length){
+                throw new java.util.NoSuchElementException();
+            }
             return temp[count++];
         }
     }
