@@ -77,18 +77,18 @@ public class Deque<Item> implements Iterable<Item> {
             N--;
             return rItem;
         }
-        Item removedFirstItem = first.item;
+        // Item removedFirstItem = first.item;
+        // first.item = null;
+        // first = first.next;
+        // first.back = null;
+        Node remFirst = first;
         first = first.next;
+        first.back = null;
+        remFirst.next = null;
+        Item remFirstItem = remFirst.item;
+        remFirst.item = null;
         N--;
-        return removedFirstItem;
-        // if(first!=null){
-        //     first.back=null;
-        // } 
-        
-        // if(first==null){
-        //     last=null;
-        // }
-        
+        return remFirstItem;
     }
 
     // remove and return the item from the back
@@ -102,11 +102,20 @@ public class Deque<Item> implements Iterable<Item> {
             N--; 
             return rItem;
         }
-        Node remLast = last;
-        last.back.next = null;
-        last = remLast.back;
+        // Item remLastItem = last.item;
+        // last.item = null;
+        // last = last.back;
+        // last.next = null;
+        // N--;
+        // return remLastItem;
+        Node remBack = last;
+        last = last.back;
+        last.next = null;
+        remBack.back = null;
+        Item rItem = remBack.item;
+        remBack.item = null;
         N--;
-        return remLast.item;
+        return rItem;
     }
 
     // return an iterator over items in order from front to back
@@ -146,12 +155,14 @@ public class Deque<Item> implements Iterable<Item> {
     }
      // unit testing (required)
     public static void main(String[] args){
-        Deque<Integer> intDeque = new Deque<Integer>();
-        intDeque.addFirst(1);
-        intDeque.addLast(4);
-        intDeque.removeLast();
-        // intDeque.addFirst(5);
-        for(int i : intDeque){
+        Deque<Integer> deque = new Deque<>();
+        deque.addFirst(1);
+        deque.addFirst(10);
+        deque.addFirst(10);
+        deque.addLast(10);
+        deque.addFirst(16);
+        deque.removeFirst();
+        for(int i:deque){
             System.out.println(i);
         }
     }
