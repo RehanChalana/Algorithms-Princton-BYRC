@@ -37,10 +37,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // remove and return a random item
     public Item dequeue(){
-        int rmindex = StdRandom.uniformInt(N+1);
+        int rmindex = StdRandom.uniformInt(N);
         Item ritem = rdqueue[rmindex];
         rdqueue[rmindex] = null;
-        for(int i=rmindex+1;i<rdqueue.length;i++){
+        for(int i=rmindex;i<rdqueue.length-1;i++){
             rdqueue[i]=rdqueue[i+1];
         }
         N--;
@@ -70,7 +70,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         StdRandom.shuffle(temp);
         }
         
-
         public boolean hasNext(){
             return count!=temp.length;
         }
@@ -92,7 +91,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         rq.enqueue(9);
         rq.enqueue(10);
         rq.enqueue(15);
-        System.out.println(rq.sample());
+        System.out.println(rq.dequeue());
+        for(int i:rq){
+            System.out.println(i);
+        }
     }
 
 }
