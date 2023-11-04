@@ -144,12 +144,6 @@ public class Deque<Item> implements Iterable<Item> {
             throw new UnsupportedOperationException();
         }
     }
-
-    private void printTest(){
-        System.out.println(N+" =N");
-        System.out.println(first.item+" firstItem");
-        System.out.println(last.item+" lastItem");
-    }
      // unit testing (required)
     public static void main(String[] args){
         Deque<Integer> intDeque = new Deque<Integer>();

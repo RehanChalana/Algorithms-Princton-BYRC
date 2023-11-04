@@ -7,6 +7,7 @@ public class Permutation {
         while(StdIn.isEmpty()){
             rqStrings.enqueue(StdIn.readString());
         }
+        
         for(int i=0;i<Integer.parseInt(args[0]);i++){
             StdOut.print(rqStrings.sample());
         }
