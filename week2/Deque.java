@@ -102,12 +102,6 @@ public class Deque<Item> implements Iterable<Item> {
             N--; 
             return rItem;
         }
-        // Item remLastItem = last.item;
-        // last.item = null;
-        // last = last.back;
-        // last.next = null;
-        // N--;
-        // return remLastItem;
         Node remBack = last;
         last = last.back;
         last.next = null;

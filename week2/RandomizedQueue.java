@@ -16,8 +16,12 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private void resize(int max){
         Item[] temp = (Item[]) new Object[max];
+        int nonnull = 0;
         for(int i=0;i<N;i++){
-            temp[i] = rdqueue[i];
+            if(rdqueue[i]!=null){
+                temp[nonnull]=rdqueue[i];
+                nonnull++;
+            }
         } 
         rdqueue = temp;
     }
@@ -45,11 +49,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         }
         int rmindex = StdRandom.uniformInt(N);
         Item ritem = rdqueue[rmindex];
-        rdqueue[rmindex] = null;
-        for(int i=rmindex;i<rdqueue.length-1;i++){
-            rdqueue[i]=rdqueue[i+1];
-        }
-        N--;
+        rdqueue[rmindex] = rdqueue[N-1];
+        rdqueue[N--]=null;
         if(N==rdqueue.length/4 && N>0){
             resize(N*2);
         }
@@ -98,6 +99,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // unit testing (required)
     public static void main(String[] args){
-        }
+
+    }
     }
 
