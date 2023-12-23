@@ -64,11 +64,11 @@
             return Double.NEGATIVE_INFINITY;
          } else if(this.y == that.y){
             return +0.0;
-         } else if(this.x==that.x){
+         } else if(this.x == that.x){
             return Double.POSITIVE_INFINITY;
-         } else{
-            return (that.y-this.y)/(that.x-this.x);
-         }
+         } 
+         
+         return (1.0*(that.y-this.y))/(that.x-this.x);
      }
  
      /**
@@ -86,6 +86,9 @@
      public int compareTo(Point that) {
          /* YOUR CODE HERE */
          if(this.y==that.y){
+            if(this.x==that.x){
+                return 0;
+            }
             return this.x - that.x;
          }
          return this.y-that.y;
@@ -132,5 +135,7 @@
       */
      public static void main(String[] args) {
          /* YOUR CODE HERE */
+         
+         System.out.println(new Point(205, 497).slopeTo(new Point(324, 423)));
      }
  }
