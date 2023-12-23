@@ -99,6 +99,19 @@
       */
      public Comparator<Point> slopeOrder() {
          /* YOUR CODE HERE */
+         return new BySlope();
+     }
+
+     private class BySlope implements Comparator<Point>{
+        public int compare(Point a,Point b){
+            if(slopeTo(a)>slopeTo(b)){
+                return 1;
+            } else if(slopeTo(a)<slopeTo(b)){
+                return -1;
+            } else{
+                return 0;
+            }
+        }
      }
  
  
