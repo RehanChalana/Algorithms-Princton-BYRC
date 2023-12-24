@@ -9,15 +9,17 @@ public class FastCollinearPoints {
     this.lines = new ArrayList<>();
     for(int p=0;p<points.length-2;p++){
         Arrays.sort(points,p+1,points.length,points[p].slopeOrder());
-        int j=0;
-        while(p+2<points.length-2 && points[p].slopeTo(points[p+1])==points[p].slopeTo(points[p+2])){
+        int j=p+1;
+        int count=0;
+        while(j<points.length-1 && points[p].slopeTo(points[j])==points[p].slopeTo(points[j+1])){
             j++;
+            count++;
         }
-        if(j-p>=3){
+        if(count>=3){
             // Point q = points[p+1];
             // Point r = points[p+2];
             Point[] line_points = new Point[j];
-            for(int t=p;t<=p+j;t++){
+            for(int t=p;t<=p+count;t++){
                 line_points[t-p]=points[t];
             }
             Arrays.sort(line_points);
