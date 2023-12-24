@@ -12,22 +12,23 @@ public class FastCollinearPoints {
         for(int q=p+1;q<points.length-1;q++){
             int j=q+1;
             int count=2;
-            while(j<points.length && points[p].slopeTo(points[q])==points[p].slopeTo(points[j])){
+            while(j<points.length && copy_points[p].slopeTo(copy_points[q])==copy_points[p].slopeTo(copy_points[j])){
                 j++;
                 count++;
             }
             if(count>3){
-                addLineSegment(copy_points,p,j-1);
+                addLineSegment(copy_points,p,q,j-1);
             }
         }
     }
 
    }
 
-   private void addLineSegment(Point[] copy_Points,int start,int end){
-    Point[] linePoints = new Point[end-start+1];
+   private void addLineSegment(Point[] copy_Points,int p,int start,int end){
+    Point[] linePoints = new Point[end-start+2];
+    linePoints[0] = copy_Points[p];
     for(int i=start;i<=end;i++){
-        linePoints[i-start]= copy_Points[i];
+        linePoints[i-start+1]= copy_Points[i];
     }
     Arrays.sort(linePoints);
     lines.add(new LineSegment(linePoints[0],linePoints[linePoints.length-1]));
