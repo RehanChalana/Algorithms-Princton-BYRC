@@ -1,44 +1,40 @@
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.ArrayList;
 
 public class FastCollinearPoints {
-    // finds all line segments containing 4 or more points
     private ArrayList<LineSegment> lines;
 
-    public FastCollinearPoints(Point[] points){
-    this.lines = new ArrayList<>();
+   public FastCollinearPoints(Point[] points){
+    lines = new ArrayList<>();
     for(int p=0;p<points.length-2;p++){
-        Arrays.sort(points,p+1,points.length,points[p].slopeOrder());
-        int j=p+1;
-        int count=0;
-        while(j<points.length-1 && points[p].slopeTo(points[j])==points[p].slopeTo(points[j+1])){
-            j++;
-            count++;
-        }
-        if(count>=3){
-            // Point q = points[p+1];
-            // Point r = points[p+2];
-            Point[] line_points = new Point[j];
-            for(int t=p;t<=p+count;t++){
-                line_points[t-p]=points[t];
+        Point[] copy_points = points.clone();
+        Arrays.sort(copy_points,p,points.length,points[p].slopeOrder());
+        for(int q=p+1;q<points.length-1;q++){
+            int j=q+1;
+            while(points[p].slopeTo(points[q])==points[p].slopeTo(points[j])){
+                j++;
             }
-            Arrays.sort(line_points);
-            lines.add(new LineSegment(line_points[0], line_points[line_points.length-1]));
+            if(j-p>=3){
+                addLineSegment(copy_points,p,j);
+            }
         }
     }
+
    }
-    
-    // the number of line segments
+
+   private void addLineSegment(Point[] copy_Points,int start,int end){
+    Point[] linePoints = new Point[end-start];
+    for(int i=start;i<=end;i++){
+        linePoints[i-start]= copy_Points[i];
+    }
+    Arrays.sort(linePoints);
+    lines.add(new LineSegment(linePoints[0],linePoints[linePoints.length-1]));
+
+   }
    public int numberOfSegments(){
-    return lines.size();
-   }
-   
-    // the line segments
+
+   }   
    public LineSegment[] segments(){
-    LineSegment[] lines_array = new LineSegment[lines.size()];
-        for(int i=0;i<lines.size();i++){
-            lines_array[i]=lines.get(i);
-        }
-        return lines_array;
-    }
-}               
+
+   }              
+}
