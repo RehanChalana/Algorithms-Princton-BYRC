@@ -28,10 +28,15 @@ public class FastCollinearPoints {
     
     // the number of line segments
    public int numberOfSegments(){
+    return lines.size();
    }
    
     // the line segments
    public LineSegment[] segments(){
-
-   }               
-}
+    LineSegment[] lines_array = new LineSegment[lines.size()];
+        for(int i=0;i<lines.size();i++){
+            lines_array[i]=lines.get(i);
+        }
+        return lines_array;
+    }
+}               
