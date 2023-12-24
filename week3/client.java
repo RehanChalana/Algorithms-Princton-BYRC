@@ -14,7 +14,9 @@ public class client {
         int x = in.readInt();
         int y = in.readInt();
         points[i] = new Point(x, y);
+        // System.out.println(points[i]);
     }
+
 
     // draw the points
     StdDraw.enableDoubleBuffering();
@@ -26,7 +28,8 @@ public class client {
     StdDraw.show();
 
     // print and draw the line segments
-    BruteCollinearPoints collinear = new BruteCollinearPoints(points);
+    FastCollinearPoints collinear = new FastCollinearPoints(points);
+    // BruteCollinearPoints collinear = new BruteCollinearPoints(points);
     for (LineSegment segment : collinear.segments()) {
         StdOut.println(segment);
         segment.draw();
