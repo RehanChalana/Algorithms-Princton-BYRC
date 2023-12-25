@@ -6,8 +6,11 @@ public class FastCollinearPoints {
 
    public FastCollinearPoints(Point[] points){
     lines = new ArrayList<>();
+    // iterating through the points array with p 
     for(int p=0;p<points.length-2;p++){
+        // creating a copy of the points array
         Point[] copy_points = points.clone();
+        // sorting the copy_points array from p+1  with the slope the points makes with p
         Arrays.sort(copy_points,p,points.length,points[p].slopeOrder());
         for(int q=p+1;q<points.length-1;q++){
             int j=q+1;
