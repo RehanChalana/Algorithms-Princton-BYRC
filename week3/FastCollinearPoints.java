@@ -12,15 +12,22 @@ public class FastCollinearPoints {
         Point[] copy_points = points.clone();
         // sorting the copy_points array from p+1  with the slope the points makes with p
         Arrays.sort(copy_points,p,points.length,points[p].slopeOrder());
-        for(int q=p+1;q<points.length-1;q++){
+        int q = p+1;
+        while(q<points.length-1){
             int j=q+1;
-            int count=2;
+            int count=0;
+            // checking adjacent pairs having same slope as p
             while(j<points.length && copy_points[p].slopeTo(copy_points[q])==copy_points[p].slopeTo(copy_points[j])){
                 j++;
                 count++;
             }
-            if(count>3){
-                addLineSegment(copy_points,p,q,j-1);
+            if(count==0){
+                q++;
+            } else{
+                q+=count;
+            }  
+            if(count>1){
+                addLineSegment(copy_points, p, q-count, j-1);
             }
         }
     }
@@ -35,8 +42,8 @@ public class FastCollinearPoints {
     }
     Arrays.sort(linePoints);
     lines.add(new LineSegment(linePoints[0],linePoints[linePoints.length-1]));
-
    }
+
    public int numberOfSegments(){
     return lines.size();
 
