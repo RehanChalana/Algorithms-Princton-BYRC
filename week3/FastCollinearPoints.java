@@ -6,37 +6,44 @@ public class FastCollinearPoints {
 
    public FastCollinearPoints(Point[] points){
     lines = new ArrayList<>();
-    // iterating through the points array with p 
-    for(int p=0;p<points.length-2;p++){
-        // creating a copy of the points array
-        Point[] copy_points = points.clone();
-        // sorting the copy_points array from p+1  with the slope the points makes with p
-        Arrays.sort(copy_points,p,points.length,points[p].slopeOrder());
-        for(int q=p+1;q<points.length-1;q++){
+    for(int p=0;p<points.length;p++){
+        Point[] copy_Points = points.clone();
+        Arrays.sort(copy_Points,points[p].slopeOrder());
+        int q = 0;
+        while(q<points.length){
+            int count=0;
             int j=q+1;
-            int count=2;
-            while(j<points.length && copy_points[p].slopeTo(copy_points[q])==copy_points[p].slopeTo(copy_points[j])){
-                j++;
+            while(j<points.length && points[p].slopeTo(copy_Points[q])==points[p].slopeTo(copy_Points[j])){
                 count++;
+                j++;
             }
-            if(count>3){
-                addLineSegment(copy_points,p,q,j-1);
+            if(count==0){
+                q++;
+            } else{
+                q+=count;
+            }
+            if(count>1){
+                addLineSegment(copy_Points,points, p, q-count, j-1);
             }
         }
     }
+    }
 
-   }
+   
 
-   private void addLineSegment(Point[] copy_Points,int p,int start,int end){
+   private void addLineSegment(Point[] copy_Points,Point[] points,int p,int start,int end){
     Point[] linePoints = new Point[end-start+2];
-    linePoints[0] = copy_Points[p];
+    linePoints[0] = points[p];
     for(int i=start;i<=end;i++){
         linePoints[i-start+1]= copy_Points[i];
     }
     Arrays.sort(linePoints);
-    lines.add(new LineSegment(linePoints[0],linePoints[linePoints.length-1]));
-
+    if(points[p].compareTo(linePoints[0])==0){
+        lines.add(new LineSegment(linePoints[0],linePoints[linePoints.length-1]));
+    }
+    
    }
+
    public int numberOfSegments(){
     return lines.size();
 
