@@ -5,14 +5,22 @@ public class FastCollinearPoints {
     private ArrayList<LineSegment> lines;
 
    public FastCollinearPoints(Point[] points){
+    if(points==null){
+        throw new java.lang.IllegalArgumentException("points array can't be null");
+    }
     lines = new ArrayList<>();
+    // iterating through the points array with p
     for(int p=0;p<points.length;p++){
+        // cloning the points array so we don't modify the original array
         Point[] copy_Points = points.clone();
+        // sorting the copy_points with the slope they make with p
         Arrays.sort(copy_Points,points[p].slopeOrder());
-        int q = 0;
-        while(q<points.length){
+        // checking adjacent points 
+        int q = 1;
+        while(q<points.length-1){
             int count=0;
             int j=q+1;
+            // keep increasing j and count if p slope q == p slope
             while(j<points.length && points[p].slopeTo(copy_Points[q])==points[p].slopeTo(copy_Points[j])){
                 count++;
                 j++;
@@ -37,11 +45,20 @@ public class FastCollinearPoints {
     for(int i=start;i<=end;i++){
         linePoints[i-start+1]= copy_Points[i];
     }
-    Arrays.sort(linePoints);
-    if(points[p].compareTo(linePoints[0])==0){
-        lines.add(new LineSegment(linePoints[0],linePoints[linePoints.length-1]));
+    // Arrays.sort(linePoints);
+    Point min = linePoints[0];
+    Point max = linePoints[0];
+    for(Point i:linePoints){
+        if(i.compareTo(max)>0){
+            max=i;
+        }
+        if(i.compareTo(min)<0){
+            min=i;
+        }
     }
-    
+    if(points[p].compareTo(min)==0){
+        lines.add(new LineSegment(min,max));
+    }
    }
 
    public int numberOfSegments(){
