@@ -38,11 +38,28 @@ public class Board {
         return this.N;
     }
 
+    public int hamming(){
+        int check=1;
+        int count=0;
+        for(int i=0;i<this.N;i++){
+            for(int j=0;j<this.N;j++){
+                if(i==this.N-1 && j==this.N-1){
+                    break;
+                }
+                if(this.board_array[i][j]!=check){
+                    count++;
+                }
+                check++;
+            }
+        }
+        return count;
+    }
+
     public static void main(String[] args) {
         int num=0;
-        int[][] in = new int[5][5];
-        for(int i=0;i<5;i++){
-            for(int j=0;j<5;j++){
+        int[][] in = new int[3][3];
+        for(int i=0;i<3;i++){
+            for(int j=0;j<3;j++){
                 in[i][j]=num;
                 // System.out.print(in[i][j]+" ");
                 num++;
@@ -50,8 +67,8 @@ public class Board {
             // System.out.println();
         }
         Board brd = new Board(in);
-        // System.out.println(brd);
-        System.out.println(brd.dimension());
+        System.out.println(brd.hamming());
+        // System.out.println(brd.dimension());
     }
 }
 
