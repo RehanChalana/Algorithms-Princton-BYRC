@@ -1,7 +1,9 @@
-package week4;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
+
+import edu.princeton.cs.algs4.In;
 
 public class Board {
     private final int[][] board_array;
@@ -93,7 +95,18 @@ public class Board {
     }
 
     public static void main(String[] args) {
-      
+        Scanner scan = new Scanner(System.in)
+        In in = new In(scan.nextLine());
+        int n = in.readInt();
+        int[][] tiles = new int[n][n];
+        for (int i = 0; i < n; i++){
+            for (int j = 0; j < n; j++){
+                tiles[i][j] = in.readInt();
+            }
+        }        
+        Board initial = new Board(tiles);
+
+
     }
 }
 
