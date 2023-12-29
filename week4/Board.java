@@ -21,19 +21,14 @@ public class Board {
     }
 
     public String toString(){
-        String dim = N+"\n";
+        String dim = this.N+"\n";
         String answer = dim;
         for(int i=0;i<N;i++){
             String line = "";
             for(int j=0;j<N;j++){
                 line = line +this.board_array[i][j]+" ";
             }
-            if(i==this.N-1){
-                answer=answer+line;
-            } else{
-                answer = answer+line+"\n";
-            }
-            
+            answer = answer+line+"\n";   
         }
         return answer;
     }
@@ -61,36 +56,44 @@ public class Board {
         return ((this.N-1)*row)+col+row+1;
     }
 
-    // public int manhattan(){
-    //     int check = 1;
-    //     int sum = 0;
-    //     for(int i=0;i<this.N;i++){
-    //         for(int j=0;j<this.N;j++){
-                
-                
-    //             check++;
-    //         }
-    //     }
-    //     return sum;
-    // }
+    public int manhattan(){
+        int sum = 0;
+        for(int i=0;i<this.N;i++){
+            for(int j=0;j<this.N;j++){
+             if(this.board_array[i][j]!=0 && this.board_array[i][j]!=getTile(i, j)){
+                        sum+=findMDistance(i, j);
+                    }
+                }
+            }
+        return sum;
+    }
+    
 
-
+    private int findMDistance(int row , int col){
+         for(int q=0;q<this.N;q++){
+                for(int s=0;s<this.N;s++){
+                    if(this.answer_array[q][s]==this.board_array[row][col]){
+                        int x = 0;
+                        if(row>=q){
+                            x=row-q;
+                        } else{
+                            x=q-row;
+                        }
+                        int y = 0;
+                        if(col>=s){
+                            y=col-s;
+                        } else{
+                            y=s-col;
+                        }
+                        return y+x;
+                    }
+                }
+          }
+          return 0;
+    }
 
     public static void main(String[] args) {
-        int num=0;
-        int[][] in = new int[3][3];
-        for(int i=0;i<3;i++){
-            for(int j=0;j<3;j++){
-                in[i][j]=num;
-                // System.out.print(in[i][j]+" ");
-                num++;
-            }
-            // System.out.println();
-        }
-        Board brd = new Board(in);
-        // System.err.println(brd);
-        System.out.println(brd.hamming());
-        // System.out.println(brd.manhattan());
+      
     }
 }
 
