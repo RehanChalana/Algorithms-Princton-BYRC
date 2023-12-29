@@ -3,20 +3,27 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Stack;
 
 public class Board {
     private final int[][] board_array;
     private final int[][] answer_array;
+    private final int[]   empty_position_array;
     private final int N;
 
     public Board(int[][] tiles){
         this.N = tiles.length;
         this.board_array = new int[this.N][this.N];
         this.answer_array = new int[this.N][this.N];
+        this.empty_position_array = new int[2];
         for(int i=0;i<N;i++){
             for(int j=0; j<N;j++){
                 this.board_array[i][j]=tiles[i][j];
                 this.answer_array[i][j]=getTile(i, j);
+                if(tiles[i][j]==0){
+                    this.empty_position_array[0]=i;
+                    this.empty_position_array[1]=j;
+                }
             }
         }
         this.answer_array[this.N-1][this.N-1]=0;
@@ -86,6 +93,33 @@ public class Board {
         }
         Board that = (Board)x;
         return this.N==that.N && Arrays.deepEquals(this.board_array, that.board_array);
+    }
+
+    // public Iterable<Board> neighbors(){
+    //     Stack<Board> neighbors = new Stack<>();
+    //     if(this.empty_position_array[1]<this.N-1){
+    //         int[][] right_exchange = copyArray();
+    //         int temp = right_exchange[this.empty_position_array[0]][this.empty_position_array[1]+1];
+    //         right_exchange[this.empty_position_array[0]][this.empty_position_array[1]+1]=0;
+    //         right_exchange[this.empty_position_array[0]][this.empty_position_array[1]]=temp;
+    //         Board rightBoard = new Board(right_exchange);
+    //         neighbors.push(rightBoard);
+    //     }
+
+    //     if(this.empty_position_array[1]>0){
+    //         int[][] left_exchange = copyArray();
+
+    //     }
+    // }
+
+    private int[][] copyArray(){
+        int[][] copy = new int[this.N][this.N];
+        for(int i=0;i<this.N;i++){
+            for(int j=0;j<this.N;j++){
+                copy[i][j]=this.board_array[i][j];
+            }
+        }
+        return copy;
     }
     
 
