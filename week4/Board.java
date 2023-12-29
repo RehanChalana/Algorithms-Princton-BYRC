@@ -20,6 +20,7 @@ public class Board {
                 this.answer_array[i][j]=getTile(i, j);
             }
         }
+        this.answer_array[this.N-1][this.N-1]=0;
     }
 
     public String toString(){
@@ -52,6 +53,10 @@ public class Board {
             }
         }
         return count;
+    }
+
+    public boolean isGoal(){
+        return Arrays.deepEquals(this.board_array, this.answer_array);
     }
 
     private int getTile(int row,int col){
@@ -95,7 +100,7 @@ public class Board {
     }
 
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in)
+        Scanner scan = new Scanner(System.in);
         In in = new In(scan.nextLine());
         int n = in.readInt();
         int[][] tiles = new int[n][n];
@@ -105,6 +110,10 @@ public class Board {
             }
         }        
         Board initial = new Board(tiles);
+        System.out.println(initial);
+        System.out.println(initial.hamming());
+        System.out.println(initial.manhattan());
+        System.out.println(initial.isGoal());
 
 
     }
