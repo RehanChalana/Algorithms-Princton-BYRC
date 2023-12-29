@@ -1,17 +1,21 @@
 package week4;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Board {
-    private int[][] board_array;
-    private int N;
+    private final int[][] board_array;
+    private final int[][] answer_array;
+    private final int N;
 
     public Board(int[][] tiles){
         this.N = tiles.length;
         this.board_array = new int[this.N][this.N];
+        this.answer_array = new int[this.N][this.N];
         for(int i=0;i<N;i++){
             for(int j=0; j<N;j++){
                 this.board_array[i][j]=tiles[i][j];
+                this.answer_array[i][j]=getTile(i, j);
             }
         }
     }
@@ -39,21 +43,38 @@ public class Board {
     }
 
     public int hamming(){
-        int check=1;
         int count=0;
         for(int i=0;i<this.N;i++){
             for(int j=0;j<this.N;j++){
                 if(i==this.N-1 && j==this.N-1){
                     break;
                 }
-                if(this.board_array[i][j]!=check){
+                if(this.board_array[i][j]!=getTile(i, j)){
                     count++;
                 }
-                check++;
             }
         }
         return count;
     }
+
+    private int getTile(int row,int col){
+        return ((this.N-1)*row)+col+row+1;
+    }
+
+    // public int manhattan(){
+    //     int check = 1;
+    //     int sum = 0;
+    //     for(int i=0;i<this.N;i++){
+    //         for(int j=0;j<this.N;j++){
+                
+                
+    //             check++;
+    //         }
+    //     }
+    //     return sum;
+    // }
+
+
 
     public static void main(String[] args) {
         int num=0;
@@ -67,8 +88,9 @@ public class Board {
             // System.out.println();
         }
         Board brd = new Board(in);
+        // System.err.println(brd);
         System.out.println(brd.hamming());
-        // System.out.println(brd.dimension());
+        // System.out.println(brd.manhattan());
     }
 }
 
