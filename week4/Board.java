@@ -34,6 +34,10 @@ public class Board {
         return answer;
     }
 
+    public int dimension(){
+        return this.N;
+    }
+
     public static void main(String[] args) {
         int num=0;
         int[][] in = new int[5][5];
@@ -46,7 +50,8 @@ public class Board {
             // System.out.println();
         }
         Board brd = new Board(in);
-        System.out.println(brd);
+        // System.out.println(brd);
+        System.out.println(brd.dimension());
     }
 }
 
