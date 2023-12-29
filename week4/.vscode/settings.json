@@ -1,0 +1,12 @@
+{
+    "java.dependency.packagePresentation": "hierarchical",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "algs4.jar"
+    ],
+    "java.classpath": [
+        "lib/**/*.jar",
+        "algs4.jar",
+        "${workspaceFolder}/bin"
+    ]
+}

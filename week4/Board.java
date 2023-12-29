@@ -1,35 +1,36 @@
-package week4;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
+
+import edu.princeton.cs.algs4.In;
 
 public class Board {
-    private int[][] board_array;
-    private int N;
+    private final int[][] board_array;
+    private final int[][] answer_array;
+    private final int N;
 
     public Board(int[][] tiles){
         this.N = tiles.length;
         this.board_array = new int[this.N][this.N];
+        this.answer_array = new int[this.N][this.N];
         for(int i=0;i<N;i++){
             for(int j=0; j<N;j++){
                 this.board_array[i][j]=tiles[i][j];
+                this.answer_array[i][j]=getTile(i, j);
             }
         }
     }
 
     public String toString(){
-        String dim = N+"\n";
+        String dim = this.N+"\n";
         String answer = dim;
         for(int i=0;i<N;i++){
             String line = "";
             for(int j=0;j<N;j++){
                 line = line +this.board_array[i][j]+" ";
             }
-            if(i==this.N-1){
-                answer=answer+line;
-            } else{
-                answer = answer+line+"\n";
-            }
-            
+            answer = answer+line+"\n";   
         }
         return answer;
     }
@@ -39,36 +40,73 @@ public class Board {
     }
 
     public int hamming(){
-        int check=1;
         int count=0;
         for(int i=0;i<this.N;i++){
             for(int j=0;j<this.N;j++){
                 if(i==this.N-1 && j==this.N-1){
                     break;
                 }
-                if(this.board_array[i][j]!=check){
+                if(this.board_array[i][j]!=getTile(i, j)){
                     count++;
                 }
-                check++;
             }
         }
         return count;
     }
 
-    public static void main(String[] args) {
-        int num=0;
-        int[][] in = new int[3][3];
-        for(int i=0;i<3;i++){
-            for(int j=0;j<3;j++){
-                in[i][j]=num;
-                // System.out.print(in[i][j]+" ");
-                num++;
+    private int getTile(int row,int col){
+        return ((this.N-1)*row)+col+row+1;
+    }
+
+    public int manhattan(){
+        int sum = 0;
+        for(int i=0;i<this.N;i++){
+            for(int j=0;j<this.N;j++){
+             if(this.board_array[i][j]!=0 && this.board_array[i][j]!=getTile(i, j)){
+                        sum+=findMDistance(i, j);
+                    }
+                }
             }
-            // System.out.println();
-        }
-        Board brd = new Board(in);
-        System.out.println(brd.hamming());
-        // System.out.println(brd.dimension());
+        return sum;
+    }
+    
+
+    private int findMDistance(int row , int col){
+         for(int q=0;q<this.N;q++){
+                for(int s=0;s<this.N;s++){
+                    if(this.answer_array[q][s]==this.board_array[row][col]){
+                        int x = 0;
+                        if(row>=q){
+                            x=row-q;
+                        } else{
+                            x=q-row;
+                        }
+                        int y = 0;
+                        if(col>=s){
+                            y=col-s;
+                        } else{
+                            y=s-col;
+                        }
+                        return y+x;
+                    }
+                }
+          }
+          return 0;
+    }
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in)
+        In in = new In(scan.nextLine());
+        int n = in.readInt();
+        int[][] tiles = new int[n][n];
+        for (int i = 0; i < n; i++){
+            for (int j = 0; j < n; j++){
+                tiles[i][j] = in.readInt();
+            }
+        }        
+        Board initial = new Board(tiles);
+
+
     }
 }
 
