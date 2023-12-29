@@ -1,5 +1,4 @@
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -74,6 +73,20 @@ public class Board {
             }
         return sum;
     }
+
+    public boolean equals(Object x){
+        if(this==x){
+            return true;
+        }
+        if(x==null){
+            return false;
+        }
+        if(this.getClass()!=x.getClass()){
+            return false;
+        }
+        Board that = (Board)x;
+        return this.N==that.N && Arrays.deepEquals(this.board_array, that.board_array);
+    }
     
 
     private int findMDistance(int row , int col){
@@ -113,9 +126,6 @@ public class Board {
         System.out.println(initial);
         System.out.println(initial.hamming());
         System.out.println(initial.manhattan());
-        System.out.println(initial.isGoal());
-
-
     }
 }
 
