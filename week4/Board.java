@@ -95,22 +95,42 @@ public class Board {
         return this.N==that.N && Arrays.deepEquals(this.board_array, that.board_array);
     }
 
-    // public Iterable<Board> neighbors(){
-    //     Stack<Board> neighbors = new Stack<>();
-    //     if(this.empty_position_array[1]<this.N-1){
-    //         int[][] right_exchange = copyArray();
-    //         int temp = right_exchange[this.empty_position_array[0]][this.empty_position_array[1]+1];
-    //         right_exchange[this.empty_position_array[0]][this.empty_position_array[1]+1]=0;
-    //         right_exchange[this.empty_position_array[0]][this.empty_position_array[1]]=temp;
-    //         Board rightBoard = new Board(right_exchange);
-    //         neighbors.push(rightBoard);
-    //     }
-
-    //     if(this.empty_position_array[1]>0){
-    //         int[][] left_exchange = copyArray();
-
-    //     }
-    // }
+    public Iterable<Board> neighbors(){
+        Stack<Board> neighbors = new Stack<>();
+        if(this.empty_position_array[1]<this.N-1){
+            int[][] right_exchange = copyArray();
+            int temp = right_exchange[this.empty_position_array[0]][this.empty_position_array[1]+1];
+            right_exchange[this.empty_position_array[0]][this.empty_position_array[1]+1]=0;
+            right_exchange[this.empty_position_array[0]][this.empty_position_array[1]]=temp;
+            Board rightBoard = new Board(right_exchange);
+            neighbors.push(rightBoard);
+        }
+        if(this.empty_position_array[1]>0){
+            int[][] left_exchange = copyArray();
+            int temp = left_exchange[this.empty_position_array[0]][this.empty_position_array[1]-1];
+            left_exchange[this.empty_position_array[0]][this.empty_position_array[1]-1]=0;
+            left_exchange[this.empty_position_array[0]][this.empty_position_array[1]]=temp;
+            Board leftBoard = new Board(left_exchange);
+            neighbors.push(leftBoard);
+        }
+        if(this.empty_position_array[0]>0){
+            int[][] top_exchange = copyArray();
+            int temp = top_exchange[this.empty_position_array[0]-1][this.empty_position_array[1]];
+            top_exchange[this.empty_position_array[0]-1][this.empty_position_array[1]]=0;
+            top_exchange[this.empty_position_array[0]][this.empty_position_array[1]]=temp;
+            Board topBoard = new Board(top_exchange);
+            neighbors.push(topBoard);
+        }
+        if(this.empty_position_array[0]<this.N-1){
+            int[][] bottom_exchange = copyArray();
+            int temp = bottom_exchange[this.empty_position_array[0]+1][this.empty_position_array[1]];
+            bottom_exchange[this.empty_position_array[0]+1][this.empty_position_array[1]]=0;
+            bottom_exchange[this.empty_position_array[0]][this.empty_position_array[1]]=temp;
+            Board bottomBoard = new Board(bottom_exchange);
+            neighbors.push(bottomBoard);
+        }
+        return neighbors;
+    }
 
     private int[][] copyArray(){
         int[][] copy = new int[this.N][this.N];
@@ -158,8 +178,11 @@ public class Board {
         }        
         Board initial = new Board(tiles);
         System.out.println(initial);
-        System.out.println(initial.hamming());
-        System.out.println(initial.manhattan());
+        // System.out.println(initial.hamming());
+        // System.out.println(initial.manhattan());
+        for(Board i:initial.neighbors()){
+            System.out.println(i);
+        }
     }
 }
 
