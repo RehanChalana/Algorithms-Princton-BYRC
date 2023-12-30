@@ -31,16 +31,14 @@ public class Board {
     }
 
     public String toString(){
-        String dim = this.N+"\n";
-        String answer = dim;
+        StringBuilder answer = new StringBuilder(this.N+"\n");
         for(int i=0;i<N;i++){
-            String line = "";
             for(int j=0;j<N;j++){
-                line = line +this.board_array[i][j]+" ";
+                answer.append(this.board_array[i][j]+" ");
             }
-            answer = answer+line+"\n";   
+            answer.append("\n"); 
         }
-        return answer;
+        return answer.toString();
     }
 
     public int dimension(){
