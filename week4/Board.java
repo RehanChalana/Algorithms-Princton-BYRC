@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Stack;
+import edu.princeton.cs.algs4.StdRandom;;
 
 public class Board {
     private final int[][] board_array;
@@ -132,6 +133,25 @@ public class Board {
         return neighbors;
     }
 
+    public Board twin(){
+        int[][] twinArray = copyArray();
+        int i = StdRandom.uniformInt(this.N);
+        int j = StdRandom.uniformInt(this.N);
+        int q = StdRandom.uniformInt(this.N);
+        int s = StdRandom.uniformInt(this.N);
+        while(twinArray[i][j]==0 || twinArray[q][s]==0 || twinArray[i][j]==twinArray[q][s]){
+            i=StdRandom.uniformInt(this.N);
+            j=StdRandom.uniformInt(this.N);
+            q=StdRandom.uniformInt(this.N);
+            s=StdRandom.uniformInt(this.N);
+        }
+        int temp = twinArray[i][j];
+        twinArray[i][j]=twinArray[q][s];
+        twinArray[q][s]=temp;
+        Board twin = new Board(twinArray);
+        return twin;
+    }
+
     private int[][] copyArray(){
         int[][] copy = new int[this.N][this.N];
         for(int i=0;i<this.N;i++){
@@ -178,11 +198,9 @@ public class Board {
         }        
         Board initial = new Board(tiles);
         System.out.println(initial);
+        System.out.println(initial.twin());
         // System.out.println(initial.hamming());
         // System.out.println(initial.manhattan());
-        for(Board i:initial.neighbors()){
-            System.out.println(i);
-        }
+        
     }
 }
-
