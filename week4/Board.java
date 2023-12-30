@@ -6,10 +6,10 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Stack;
 import edu.princeton.cs.algs4.StdRandom;;
 
-public class Board {
+public final class Board {
     private final int[][] board_array;
     private final int[][] answer_array;
-    private final int[]   empty_position_array;
+    private final int[] empty_position_array;
     private final int N;
 
     public Board(int[][] tiles){
@@ -31,16 +31,14 @@ public class Board {
     }
 
     public String toString(){
-        String dim = this.N+"\n";
-        String answer = dim;
+        StringBuilder answer = new StringBuilder(this.N+"\n");
         for(int i=0;i<N;i++){
-            String line = "";
             for(int j=0;j<N;j++){
-                line = line +this.board_array[i][j]+" ";
+                answer.append(this.board_array[i][j]+" ");
             }
-            answer = answer+line+"\n";   
+            answer.append("\n"); 
         }
-        return answer;
+        return answer.toString();
     }
 
     public int dimension(){
@@ -135,21 +133,35 @@ public class Board {
 
     public Board twin(){
         int[][] twinArray = copyArray();
-        int i = StdRandom.uniformInt(this.N);
-        int j = StdRandom.uniformInt(this.N);
-        int q = StdRandom.uniformInt(this.N);
-        int s = StdRandom.uniformInt(this.N);
-        while(twinArray[i][j]==0 || twinArray[q][s]==0 || twinArray[i][j]==twinArray[q][s]){
-            i=StdRandom.uniformInt(this.N);
-            j=StdRandom.uniformInt(this.N);
-            q=StdRandom.uniformInt(this.N);
-            s=StdRandom.uniformInt(this.N);
+        int i = 0;
+        int j = 0;
+        int q = 0;
+        int s = 1;
+        while(this.empty_position_array[0]==i && this.empty_position_array[1]==j){
+            if(j>this.N-1){
+                i++;
+                j=0;
+            } else{
+                j++;
+            }
+        }
+        
+        while(this.empty_position_array[0]==q && this.empty_position_array[1]==s){
+            if(j==s){
+                s++;
+            }
+            
+            if(s>this.N-1){
+                q++;
+                s=0;
+            } else{
+                s++;
+            }
         }
         int temp = twinArray[i][j];
         twinArray[i][j]=twinArray[q][s];
         twinArray[q][s]=temp;
-        Board twin = new Board(twinArray);
-        return twin;
+        return new Board(twinArray);
     }
 
     private int[][] copyArray(){
@@ -187,18 +199,20 @@ public class Board {
     }
 
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
-        In in = new In(scan.nextLine());
-        int n = in.readInt();
-        int[][] tiles = new int[n][n];
-        for (int i = 0; i < n; i++){
-            for (int j = 0; j < n; j++){
-                tiles[i][j] = in.readInt();
-            }
-        }        
-        Board initial = new Board(tiles);
-        System.out.println(initial);
-        System.out.println(initial.twin());
+        // Scanner scan = new Scanner(System.in);
+        // In in = new In(scan.nextLine());
+        // int n = in.readInt();
+        // int[][] tiles = new int[n][n];
+        // for (int i = 0; i < n; i++){
+        //     for (int j = 0; j < n; j++){
+        //         tiles[i][j] = in.readInt();
+        //     }
+        // }        
+        // Board initial = new Board(tiles);
+        // System.out.println(initial);
+        // System.out.println(initial.twin());
+        // System.out.println(initial.twin());
+        // System.out.println(initial.twin());
         // System.out.println(initial.hamming());
         // System.out.println(initial.manhattan());
         
