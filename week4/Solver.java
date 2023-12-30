@@ -7,7 +7,7 @@ import edu.princeton.cs.algs4.MinPQ;
 public class Solver {
     private MinPQ<Node> minPQ; 
     private Node iniNode;
-    public static final Comparator<Node> BY_BOARD = new byBoard(); 
+    private static final Comparator<Node> BY_BOARD = new byBoard(); 
     
     private class Node{
         Board board;
@@ -25,7 +25,7 @@ public class Solver {
         if(initial == null){
             throw new java.lang.IllegalArgumentException();
         }
-        
+
         this.minPQ = new MinPQ<>(BY_BOARD);
         iniNode = new Node();
         iniNode.board=initial;
@@ -48,6 +48,18 @@ public class Solver {
                 this.minPQ.insert(newNode);
             }
         }
+    }
+
+    public boolean isSolvable(){
+        return false;
+    }
+
+    public int moves(){
+        return -1;
+    }
+
+    public Iterable<Board> solution(){
+        return iniNode.board.neighbors();
     }
 
     public static void main(String[] args) {
