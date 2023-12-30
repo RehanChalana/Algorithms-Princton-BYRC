@@ -22,6 +22,10 @@ public class Solver {
     }
 
     public Solver(Board initial){
+        if(initial == null){
+            throw new java.lang.IllegalArgumentException();
+        }
+        
         this.minPQ = new MinPQ<>(BY_BOARD);
         iniNode = new Node();
         iniNode.board=initial;
