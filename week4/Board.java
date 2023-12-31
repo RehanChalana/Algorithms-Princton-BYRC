@@ -8,26 +8,22 @@ import edu.princeton.cs.algs4.Stack;
 
 public final class Board {
     private final int[][] board_array;
-    // private final int[][] answer_array;
     private final int[] empty_position_array;
     private final int N;
 
     public Board(int[][] tiles){
         this.N = tiles.length;
         this.board_array = new int[this.N][this.N];
-        // this.answer_array = new int[this.N][this.N];
         this.empty_position_array = new int[2];
         for(int i=0;i<N;i++){
             for(int j=0; j<N;j++){
                 this.board_array[i][j]=tiles[i][j];
-                // this.answer_array[i][j]=getTile(i, j);
                 if(tiles[i][j]==0){
                     this.empty_position_array[0]=i;
                     this.empty_position_array[1]=j;
                 }
             }
         }
-        // this.answer_array[this.N-1][this.N-1]=0;
     }
 
     public String toString(){
@@ -144,34 +140,12 @@ public final class Board {
         int[][] twinArray = copyArray();
         int i = 0;
         int j = 0;
-        
-        while(this.empty_position_array[0]==i && this.empty_position_array[1]==j){
-            if(j>this.N-1){
-                i++;
-                j=0;
-            } else{
-                j++;
-            }
-        }
-        int q = 0;
-        int s = 1;
-        while((this.empty_position_array[0]==q && this.empty_position_array[1]==s)){
-            if(s>this.N-1){
-                q++;
-                s=0;
-            } else{
-                s++;
-            }
-        }
-
-        if(j==s){
-            s=0;
-            q++;
-        }
-
+        if((this.empty_position_array[0]==i && this.empty_position_array[1]==j) || (this.empty_position_array[0]==i && this.empty_position_array[1]==j+1)){
+           i++;
+        } 
         int temp = twinArray[i][j];
-        twinArray[i][j]=twinArray[q][s];
-        twinArray[q][s]=temp;
+        twinArray[i][j]=twinArray[i][j+1];
+        twinArray[i][j+1]=temp;
         return new Board(twinArray);
     }
 
@@ -189,7 +163,7 @@ public final class Board {
     private int findMDistance(int row , int col){
          for(int q=0;q<this.N;q++){
                 for(int s=0;s<this.N;s++){
-                    if(getTile(row, col)==this.board_array[row][col]){
+                    if(getTile(q, s)==this.board_array[row][col]){
                         int x = 0;
                         if(row>=q){
                             x=row-q;
@@ -210,18 +184,19 @@ public final class Board {
     }
 
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
-        In in = new In(scan.nextLine());
-        int n = in.readInt();
-        int[][] tiles = new int[n][n];
-        for (int i = 0; i < n; i++){
-            for (int j = 0; j < n; j++){
-                tiles[i][j] = in.readInt();
-            }
-        }        
-        Board initial = new Board(tiles);
-        System.out.println(initial.isGoal());
-        System.out.println(initial.twin().isGoal());
+        // Scanner scan = new Scanner(System.in);
+        // In in = new In(scan.nextLine());
+        // int n = in.readInt();
+        // int[][] tiles = new int[n][n];
+        // for (int i = 0; i < n; i++){
+        //     for (int j = 0; j < n; j++){
+        //         tiles[i][j] = in.readInt();
+        //     }
+        // }        
+        // Board initial = new Board(tiles);
+        // System.err.println(initial);
+        // System.out.println(initial.isGoal());
+        // System.out.println(initial.twin());
         
     }
 }
