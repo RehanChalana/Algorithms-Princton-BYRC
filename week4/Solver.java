@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.MinPQ;
+import edu.princeton.cs.algs4.Stack;
 
 public class Solver {
     private final MinPQ<Node> minPQ; 
@@ -35,7 +36,7 @@ public class Solver {
         // this.moves = 0;
         while(true){
             Node rmNode = this.minPQ.delMin();
-            System.out.println(rmNode.board);
+            // System.out.println(rmNode.board);
             // System.out.println(rmNode.board.hamming()+rmNode.moves);
             if(rmNode.board.isGoal()){
                 this.finalNode = rmNode;
@@ -63,22 +64,33 @@ public class Solver {
     }
 
     public Iterable<Board> solution(){
-        return this.finalNode.board.neighbors();
+        Stack<Board> answStack = new Stack<>();
+        Node curNode = this.finalNode;
+        while(true){
+            answStack.push(curNode.board);
+            if(curNode.moves==0){
+                break;
+            }
+            curNode=curNode.previous;
+        }
+        return answStack;
     }
 
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
-        In in = new In(scan.nextLine());
-        int n = in.readInt();
-        int[][] tiles = new int[n][n];
-        for (int i = 0; i < n; i++){
-            for (int j = 0; j < n; j++){
-                tiles[i][j] = in.readInt();
-            }
-        }        
-        Board initial = new Board(tiles);
-        Solver solve = new Solver(initial);
-        System.out.println(solve.moves());
+        // Scanner scan = new Scanner(System.in);
+        // In in = new In(scan.nextLine());
+        // int n = in.readInt();
+        // int[][] tiles = new int[n][n];
+        // for (int i = 0; i < n; i++){
+        //     for (int j = 0; j < n; j++){
+        //         tiles[i][j] = in.readInt();
+        //     }
+        // }        
+        // Board initial = new Board(tiles);
+        // Solver solve = new Solver(initial);
+        // for(Board i:solve.solution()){
+        //     System.out.println(i);
+        // }
     }
 
 
