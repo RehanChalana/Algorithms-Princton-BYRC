@@ -5,9 +5,10 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.MinPQ;
 
 public class Solver {
-    private MinPQ<Node> minPQ; 
-    private Node iniNode;
-    private static final Comparator<Node> BY_BOARD = new byBoard(); 
+    private final MinPQ<Node> minPQ; 
+    private final Node finalNode;
+    private static final Comparator<Node> BY_PRIORITY = new priority(); 
+    // private int moves;
     
     private class Node{
         Board board;
@@ -15,7 +16,7 @@ public class Solver {
         Node previous;
     }
 
-    private static class byBoard implements Comparator<Node>{
+    private static class priority implements Comparator<Node>{
             public int compare(Node x , Node y){
                 return (x.board.manhattan()+x.moves)-(y.board.manhattan()+y.moves);
             }
@@ -25,27 +26,30 @@ public class Solver {
         if(initial == null){
             throw new java.lang.IllegalArgumentException();
         }
-
-        this.minPQ = new MinPQ<>(BY_BOARD);
-        iniNode = new Node();
+        this.minPQ = new MinPQ<>(BY_PRIORITY);
+        Node iniNode = new Node();
         iniNode.board=initial;
         iniNode.moves=0;
         iniNode.previous=null;
         this.minPQ.insert(iniNode);
-        int count = 0;
+        // this.moves = 0;
         while(true){
             Node rmNode = this.minPQ.delMin();
             System.out.println(rmNode.board);
+            // System.out.println(rmNode.board.hamming()+rmNode.moves);
             if(rmNode.board.isGoal()){
+                this.finalNode = rmNode;
                 break;
             }
-            count++;
+            // this.moves++;
             for(Board i :rmNode.board.neighbors()){
                 Node newNode = new Node();
-                newNode.board=i;
-                newNode.moves=count;
-                newNode.previous=rmNode;
-                this.minPQ.insert(newNode);
+                if(!i.equals(rmNode.board)){
+                    newNode.board=i;
+                    newNode.moves=rmNode.moves+1;
+                    newNode.previous=rmNode;
+                    this.minPQ.insert(newNode);
+                }   
             }
         }
     }
@@ -55,11 +59,11 @@ public class Solver {
     }
 
     public int moves(){
-        return -1;
+        return this.finalNode.moves;
     }
 
     public Iterable<Board> solution(){
-        return iniNode.board.neighbors();
+        return this.finalNode.board.neighbors();
     }
 
     public static void main(String[] args) {
@@ -74,7 +78,7 @@ public class Solver {
         }        
         Board initial = new Board(tiles);
         Solver solve = new Solver(initial);
-
+        System.out.println(solve.moves());
     }
 
 
