@@ -8,19 +8,21 @@ import edu.princeton.cs.algs4.Stack;
 
 public final class Board {
     private final int[][] board_array;
-    private final int[] empty_position_array;
+    // private final int[] empty_position_array;
     private final int N;
+    private int empty_position_row;
+    private int empty_position_column;
 
     public Board(int[][] tiles){
         this.N = tiles.length;
         this.board_array = new int[this.N][this.N];
-        this.empty_position_array = new int[2];
+        // this.empty_position_array = new int[2];
         for(int i=0;i<N;i++){
             for(int j=0; j<N;j++){
                 this.board_array[i][j]=tiles[i][j];
                 if(tiles[i][j]==0){
-                    this.empty_position_array[0]=i;
-                    this.empty_position_array[1]=j;
+                    this.empty_position_row=i;
+                    this.empty_position_column=j;
                 }
             }
         }
@@ -101,35 +103,35 @@ public final class Board {
 
     public Iterable<Board> neighbors(){
         Stack<Board> neighbors = new Stack<>();
-        if(this.empty_position_array[1]<this.N-1){
+        if(this.empty_position_column<this.N-1){
             int[][] right_exchange = copyArray();
-            int temp = right_exchange[this.empty_position_array[0]][this.empty_position_array[1]+1];
-            right_exchange[this.empty_position_array[0]][this.empty_position_array[1]+1]=0;
-            right_exchange[this.empty_position_array[0]][this.empty_position_array[1]]=temp;
+            int temp = right_exchange[this.empty_position_row][this.empty_position_column+1];
+            right_exchange[this.empty_position_row][this.empty_position_column+1]=0;
+            right_exchange[this.empty_position_row][this.empty_position_column]=temp;
             Board rightBoard = new Board(right_exchange);
             neighbors.push(rightBoard);
         }
-        if(this.empty_position_array[1]>0){
+        if(this.empty_position_column>0){
             int[][] left_exchange = copyArray();
-            int temp = left_exchange[this.empty_position_array[0]][this.empty_position_array[1]-1];
-            left_exchange[this.empty_position_array[0]][this.empty_position_array[1]-1]=0;
-            left_exchange[this.empty_position_array[0]][this.empty_position_array[1]]=temp;
+            int temp = left_exchange[this.empty_position_row][this.empty_position_column-1];
+            left_exchange[this.empty_position_row][this.empty_position_column-1]=0;
+            left_exchange[this.empty_position_row][this.empty_position_column]=temp;
             Board leftBoard = new Board(left_exchange);
             neighbors.push(leftBoard);
         }
-        if(this.empty_position_array[0]>0){
+        if(this.empty_position_row>0){
             int[][] top_exchange = copyArray();
-            int temp = top_exchange[this.empty_position_array[0]-1][this.empty_position_array[1]];
-            top_exchange[this.empty_position_array[0]-1][this.empty_position_array[1]]=0;
-            top_exchange[this.empty_position_array[0]][this.empty_position_array[1]]=temp;
+            int temp = top_exchange[this.empty_position_row-1][this.empty_position_column];
+            top_exchange[this.empty_position_row-1][this.empty_position_column]=0;
+            top_exchange[this.empty_position_row][this.empty_position_column]=temp;
             Board topBoard = new Board(top_exchange);
             neighbors.push(topBoard);
         }
-        if(this.empty_position_array[0]<this.N-1){
+        if(this.empty_position_row<this.N-1){
             int[][] bottom_exchange = copyArray();
-            int temp = bottom_exchange[this.empty_position_array[0]+1][this.empty_position_array[1]];
-            bottom_exchange[this.empty_position_array[0]+1][this.empty_position_array[1]]=0;
-            bottom_exchange[this.empty_position_array[0]][this.empty_position_array[1]]=temp;
+            int temp = bottom_exchange[this.empty_position_row+1][this.empty_position_column];
+            bottom_exchange[this.empty_position_row+1][this.empty_position_column]=0;
+            bottom_exchange[this.empty_position_row][this.empty_position_column]=temp;
             Board bottomBoard = new Board(bottom_exchange);
             neighbors.push(bottomBoard);
         }
@@ -140,7 +142,7 @@ public final class Board {
         int[][] twinArray = copyArray();
         int i = 0;
         int j = 0;
-        if((this.empty_position_array[0]==i && this.empty_position_array[1]==j) || (this.empty_position_array[0]==i && this.empty_position_array[1]==j+1)){
+        if((this.empty_position_row==i && this.empty_position_column==j) || (this.empty_position_row==i && this.empty_position_column==j+1)){
            i++;
         } 
         int temp = twinArray[i][j];
