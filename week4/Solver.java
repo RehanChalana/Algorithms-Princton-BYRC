@@ -15,11 +15,12 @@ public class Solver {
         Board board;
         int moves;
         Node previous;
+        int manhattan;
     }
 
     private static class priority implements Comparator<Node>{
             public int compare(Node x , Node y){
-                return (x.board.manhattan()+x.moves)-(y.board.manhattan()+y.moves);
+                return (x.manhattan+x.moves)-(y.manhattan+y.moves);
             }
     }
 
@@ -32,11 +33,12 @@ public class Solver {
         iniNode.board=initial;
         iniNode.moves=0;
         iniNode.previous=null;
+        iniNode.manhattan=initial.manhattan();
         this.minPQ.insert(iniNode);
         // this.moves = 0;
         while(true){
             Node rmNode = this.minPQ.delMin();
-            // System.out.println(rmNode.board);
+            // System.out.println(rmNode.board+"del node");
             // System.out.println(rmNode.board.hamming()+rmNode.moves);
             if(rmNode.board.isGoal()){
                 this.finalNode = rmNode;
@@ -45,12 +47,15 @@ public class Solver {
             // this.moves++;
             for(Board i :rmNode.board.neighbors()){
                 Node newNode = new Node();
-                if(!i.equals(rmNode.board)){
+                if(rmNode.moves>0 && i.equals(rmNode.previous.board)){
+                    continue;
+                }
                     newNode.board=i;
                     newNode.moves=rmNode.moves+1;
                     newNode.previous=rmNode;
+                    newNode.manhattan=i.manhattan();
+                    // System.out.println(i+"added node");
                     this.minPQ.insert(newNode);
-                }   
             }
         }
     }
@@ -92,10 +97,4 @@ public class Solver {
         //     System.out.println(i);
         // }
     }
-
-
-
-
-
-
 }
