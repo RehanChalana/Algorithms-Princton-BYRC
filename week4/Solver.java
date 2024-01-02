@@ -6,20 +6,22 @@ import edu.princeton.cs.algs4.MinPQ;
 import edu.princeton.cs.algs4.Stack;
 
 public class Solver {
-    private final MinPQ<Node> minPQ; 
+    // private final MinPQ<Node> minPQ; 
     private final Node finalNode;
     private static final Comparator<Node> BY_PRIORITY = new priority(); 
+    private boolean isSolvable;
     // private int moves;
     
     private class Node{
         Board board;
         int moves;
         Node previous;
+        int manhattan;
     }
 
     private static class priority implements Comparator<Node>{
             public int compare(Node x , Node y){
-                return (x.board.manhattan()+x.moves)-(y.board.manhattan()+y.moves);
+                return (x.manhattan+x.moves)-(y.manhattan+y.moves);
             }
     }
 
@@ -27,43 +29,87 @@ public class Solver {
         if(initial == null){
             throw new java.lang.IllegalArgumentException();
         }
-        this.minPQ = new MinPQ<>(BY_PRIORITY);
+        MinPQ<Node> minPQ = new MinPQ<>(BY_PRIORITY);
+        MinPQ<Node> twinminPQ = new MinPQ<>(BY_PRIORITY);
         Node iniNode = new Node();
         iniNode.board=initial;
         iniNode.moves=0;
         iniNode.previous=null;
-        this.minPQ.insert(iniNode);
+        iniNode.manhattan=initial.manhattan();
+        minPQ.insert(iniNode);
+
+        Node twinIniNode = new Node();
+        twinIniNode.board=initial.twin();
+        twinIniNode.moves=0;
+        twinIniNode.previous=null;
+        twinIniNode.manhattan=initial.twin().manhattan();
+        twinminPQ.insert(twinIniNode);
+
+        boolean twinTurn = false;
         // this.moves = 0;
         while(true){
-            Node rmNode = this.minPQ.delMin();
-            // System.out.println(rmNode.board);
-            // System.out.println(rmNode.board.hamming()+rmNode.moves);
-            if(rmNode.board.isGoal()){
-                this.finalNode = rmNode;
-                break;
+            if(!twinTurn){
+                Node rmNode = minPQ.delMin();
+                // System.out.println(rmNode.board+"actual");
+                if(rmNode.board.isGoal()){
+                    this.finalNode = rmNode;
+                    this.isSolvable=true;
+                    break;
+                }
+                for(Board i :rmNode.board.neighbors()){
+                    Node newNode = new Node();
+                    if(rmNode.moves>0 && i.equals(rmNode.previous.board)){
+                        continue;
+                    }
+                        newNode.board=i;
+                        newNode.moves=rmNode.moves+1;
+                        newNode.previous=rmNode;
+                        newNode.manhattan=i.manhattan();
+                        minPQ.insert(newNode);
+                }
+                twinTurn=true;
             }
-            // this.moves++;
-            for(Board i :rmNode.board.neighbors()){
-                Node newNode = new Node();
-                if(!i.equals(rmNode.board)){
-                    newNode.board=i;
-                    newNode.moves=rmNode.moves+1;
-                    newNode.previous=rmNode;
-                    this.minPQ.insert(newNode);
-                }   
+
+            if(twinTurn){
+                Node rmNode = twinminPQ.delMin();
+                // System.out.println(rmNode.board+"twin");
+                if(rmNode.board.isGoal()){
+                    this.isSolvable=false;
+                    this.finalNode=null;
+                    break;
+                }
+                for(Board i :rmNode.board.neighbors()){
+                    Node newNode = new Node();
+                    if(rmNode.moves>0 && i.equals(rmNode.previous.board)){
+                        continue;
+                    }
+                        newNode.board=i;
+                        newNode.moves=rmNode.moves+1;
+                        newNode.previous=rmNode;
+                        newNode.manhattan=i.manhattan();
+                        twinminPQ.insert(newNode);
+                }
+                twinTurn=false;
             }
+            
         }
     }
 
     public boolean isSolvable(){
-        return false;
+        return this.isSolvable;
     }
 
     public int moves(){
+        if(this.isSolvable()==false){
+            return -1;
+        }
         return this.finalNode.moves;
     }
 
     public Iterable<Board> solution(){
+        if(this.isSolvable==false){
+            return null;
+        }
         Stack<Board> answStack = new Stack<>();
         Node curNode = this.finalNode;
         while(true){
@@ -88,14 +134,9 @@ public class Solver {
         // }        
         // Board initial = new Board(tiles);
         // Solver solve = new Solver(initial);
-        // for(Board i:solve.solution()){
-        //     System.out.println(i);
-        // }
+        // // for(Board i:solve.solution()){
+        // //     System.out.println(i);
+        // // }
+        // System.out.println(solve.isSolvable());
     }
-
-
-
-
-
-
 }
