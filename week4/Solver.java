@@ -6,7 +6,7 @@ import edu.princeton.cs.algs4.MinPQ;
 import edu.princeton.cs.algs4.Stack;
 
 public class Solver {
-    private final MinPQ<Node> minPQ; 
+    // private final MinPQ<Node> minPQ; 
     private final Node finalNode;
     private static final Comparator<Node> BY_PRIORITY = new priority(); 
     // private int moves;
@@ -28,16 +28,16 @@ public class Solver {
         if(initial == null){
             throw new java.lang.IllegalArgumentException();
         }
-        this.minPQ = new MinPQ<>(BY_PRIORITY);
+        MinPQ<Node> minPQ = new MinPQ<>(BY_PRIORITY);
         Node iniNode = new Node();
         iniNode.board=initial;
         iniNode.moves=0;
         iniNode.previous=null;
         iniNode.manhattan=initial.manhattan();
-        this.minPQ.insert(iniNode);
+        minPQ.insert(iniNode);
         // this.moves = 0;
         while(true){
-            Node rmNode = this.minPQ.delMin();
+            Node rmNode = minPQ.delMin();
             // System.out.println(rmNode.board+"del node");
             // System.out.println(rmNode.board.hamming()+rmNode.moves);
             if(rmNode.board.isGoal()){
@@ -55,7 +55,7 @@ public class Solver {
                     newNode.previous=rmNode;
                     newNode.manhattan=i.manhattan();
                     // System.out.println(i+"added node");
-                    this.minPQ.insert(newNode);
+                    minPQ.insert(newNode);
             }
         }
     }
