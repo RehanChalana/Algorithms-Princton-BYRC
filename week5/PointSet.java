@@ -1,6 +1,7 @@
 import java.util.TreeSet;
 
 import edu.princeton.cs.algs4.Point2D;
+import edu.princeton.cs.algs4.StdDraw;
 public class PointSet {
     private TreeSet<Point2D> BST;
 
@@ -24,5 +25,17 @@ public class PointSet {
         return this.BST.contains(p);
     }
 
-    
+    public void draw(){
+        StdDraw.setPenRadius(0.01);
+        for(Point2D i:this.BST){
+            i.draw();
+        }
+    }
+
+    public static void main(String[] args) {
+        PointSet set = new PointSet();
+        set.insert(new Point2D(0.4, 0.9));
+        set.insert(new Point2D(0.1, 0.5));
+        set.draw();
+    }
 }
