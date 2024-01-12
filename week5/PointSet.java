@@ -11,4 +11,18 @@ public class PointSet {
     public Boolean isEmpty(){
         return this.BST.isEmpty();
     }
+
+    public int size(){
+        return this.BST.size();
+    }
+
+    public void insert(Point2D p){
+        this.BST.add(p);
+    }
+
+    public boolean contains(Point2D p){
+        return this.BST.contains(p);
+    }
+
+    
 }
