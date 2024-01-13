@@ -4,14 +4,14 @@ import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.Stack;
 import edu.princeton.cs.algs4.StdDraw;
-public class PointSet {
+public class PointSET {
     private TreeSet<Point2D> BST;
 
-    public PointSet(){
+    public PointSET(){
         this.BST = new TreeSet<>();
     }
 
-    public Boolean isEmpty(){
+    public boolean isEmpty(){
         return this.BST.isEmpty();
     }
 
@@ -20,10 +20,16 @@ public class PointSet {
     }
 
     public void insert(Point2D p){
+        if(p==null){
+            throw new java.lang.IllegalArgumentException();
+        }
         this.BST.add(p);
     }
 
     public boolean contains(Point2D p){
+        if(p==null){
+            throw new java.lang.IllegalArgumentException();
+        }
         return this.BST.contains(p);
     }
 
@@ -35,6 +41,9 @@ public class PointSet {
     }
 
     public Point2D nearest(Point2D p){
+        if(p==null){
+            throw new java.lang.IllegalArgumentException();
+        }
         Point2D nearest=this.BST.first();
         for(Point2D i:this.BST){
             if(p.distanceTo(i)<p.distanceTo(nearest)){
@@ -45,6 +54,9 @@ public class PointSet {
     }
 
     public Iterable<Point2D> range(RectHV rect){
+        if(rect==null){
+            throw new java.lang.IllegalArgumentException();
+        }
         Stack<Point2D> stack = new Stack<>();
         for(Point2D i:this.BST){
             if(i.x()>=rect.xmin() && i.x()<=rect.xmax() && i.y()>=rect.ymin() && i.y()<=rect.ymax()){
@@ -55,7 +67,7 @@ public class PointSet {
     }
 
     public static void main(String[] args) {
-        PointSet set = new PointSet();
+        PointSET set = new PointSET();
         set.insert(new Point2D(0.4, 0.4));
         set.insert(new Point2D(0.2, 0.4));
         set.insert(new Point2D(0.7, 0.8));
