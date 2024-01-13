@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.StdDraw;
@@ -39,6 +41,9 @@ public class KdTree{
         if(cur==null){
             this.size++;
             return new Node(p,rect);
+        }
+        if(cur.p.equals(p)){
+            return cur;
         }
         double cmp;
         if(orien){
@@ -116,20 +121,43 @@ public class KdTree{
         draw(cur.rt,!orien);
     }
 
+    public Point2D nearest(Point2D p){
+        
+        return new Point2D(0, 0);
+    }
+
+
+
+    public Iterable<Point2D> range(RectHV rect){
+        Stack<Point2D> stack = new Stack<>();
+        range(this.root,rect,stack);
+        return stack;
+    }
+
+    private void range(Node cur,RectHV rect,Stack<Point2D> stack){
+        if(cur==null || !rect.intersects(cur.rect)){
+            return;
+        }
+        range(cur.lb,rect,stack);
+        if(rect.contains(cur.p)){
+            stack.push(cur.p);
+        }
+        range(cur.rt,rect,stack);
+    }
+
     public static void main(String[] args) {
         KdTree tree = new KdTree();
-        tree.insert(new Point2D(0.5, 0.5));
+        // tree.insert(new Point2D(0.5, 0.5));
         tree.insert(new Point2D(0.6, 0.6));
-        tree.insert(new Point2D(0.7, 0.7));
-        tree.insert(new Point2D(0.8, 0.8));
-        tree.insert(new Point2D(0.8, 0.3));
-        tree.insert(new Point2D(0.9, 0.4));
-        System.out.println(tree.contains(new Point2D(0.1, 0.2)));
-        System.out.println(tree.contains(new Point2D(0.4, 0.6)));
-        System.out.println(tree.contains(new Point2D(0.5, 0.8)));
-        System.out.println(tree.contains(new Point2D(0.25, 0.67)));
-        System.out.println(tree.contains(new Point2D(0.10, 0)));
-        System.out.println(tree.contains(new Point2D(0.6, 0.69)));
+        tree.insert(new Point2D(0.7, 0.8));
+        tree.insert(new Point2D(0.8, 0.9));
+        tree.insert(new Point2D(0.7, 0.6));
+        tree.insert(new Point2D(0.1, 0.2));
+        tree.insert(new Point2D(0.1, 0.5));
+        tree.insert(new Point2D(0.3, 0.4));
+        for(Point2D i:tree.range(new RectHV(0.5, 0.6, 1, 1))){
+            System.out.println(i);
+        }
         System.out.println(tree.size());
         tree.draw();
         System.out.println(tree.contains(new Point2D(1, 0.5)));
