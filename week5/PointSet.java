@@ -58,6 +58,9 @@ public class PointSET {
             throw new java.lang.IllegalArgumentException();
         }
         Stack<Point2D> stack = new Stack<>();
+        if(this.BST.isEmpty()){
+            return stack;
+        }
         for(Point2D i:this.BST){
             if(i.x()>=rect.xmin() && i.x()<=rect.xmax() && i.y()>=rect.ymin() && i.y()<=rect.ymax()){
                 stack.push(i);

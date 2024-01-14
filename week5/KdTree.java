@@ -135,12 +135,11 @@ public class KdTree{
         if(cur.p.distanceTo(p)<min.distanceTo(p)){
             min = cur.p;
         }
-
-        if(cur.lb==null){
-            min = nearest(cur.rt,p,min);
-        } else if(cur.rt==null){
+        if(cur.rt==null){
             min = nearest(cur.lb,p,min);
-        } else if(cur.lb.rect.contains(p)){
+        } else if(cur.lb==null){
+            min = nearest(cur.rt,p,min);
+        } else if(cur.lb.p.distanceTo(p)<cur.rt.p.distanceTo(p)){
             min = nearest(cur.lb, p, min);
             min = nearest(cur.rt,p,min);
         } else{
@@ -155,6 +154,9 @@ public class KdTree{
 
     public Iterable<Point2D> range(RectHV rect){
         Stack<Point2D> stack = new Stack<>();
+        if(this.isEmpty()){
+            return stack;
+        }
         range(this.root,rect,stack);
         return stack;
     }
@@ -172,20 +174,20 @@ public class KdTree{
 
     public static void main(String[] args) {
         // KdTree tree = new KdTree();
-        // // tree.insert(new Point2D(0.5, 0.5));
-        // tree.insert(new Point2D(0.6, 0.6));
-        // tree.insert(new Point2D(0.7, 0.8));
-        // tree.insert(new Point2D(0.8, 0.9));
-        // tree.insert(new Point2D(0.7, 0.6));
-        // tree.insert(new Point2D(0.1, 0.2));
-        // tree.insert(new Point2D(0.1, 0.5));
-        // tree.insert(new Point2D(0.3, 0.4));
-        // for(Point2D i:tree.range(new RectHV(0.5, 0.6, 1, 1))){
-        //     System.out.println(i);
-        // }
-        // System.out.println(tree.size());
+        // tree.insert(new Point2D(0.5, 0.5));
+        // tree.insert(new Point2D(0.7, 0.2));
+        // tree.insert(new Point2D(0.5, 0.4));
+        // tree.insert(new Point2D(0.2, 0.3));
+        // tree.insert(new Point2D(0.4, 0.7));
+        // tree.insert(new Point2D(0.9, 0.6));
+        // // tree.insert(new Point2D(0.1, 0.5));
+        // // tree.insert(new Point2D(0.3, 0.4));
+        // // for(Point2D i:tree.range(new RectHV(0.5, 0.6, 1, 1))){
+        // //     System.out.println(i);
+        // // }
+        // // System.out.println(tree.size());
         // tree.draw();
-        // System.out.println(tree.nearest(new Point2D(0.8, 0.85)));
+        // System.out.println(tree.nearest(new Point2D(0.78, 0.34)));
         // System.out.println(tree.contains(new Point2D(1, 0.5)));
 
     }
