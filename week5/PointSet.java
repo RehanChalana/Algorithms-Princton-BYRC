@@ -44,6 +44,9 @@ public class PointSET {
         if(p==null){
             throw new java.lang.IllegalArgumentException();
         }
+        if(this.BST.isEmpty()){
+            return null;
+        }
         Point2D nearest=this.BST.first();
         for(Point2D i:this.BST){
             if(p.distanceTo(i)<p.distanceTo(nearest)){
@@ -58,6 +61,9 @@ public class PointSET {
             throw new java.lang.IllegalArgumentException();
         }
         Stack<Point2D> stack = new Stack<>();
+        if(this.BST.isEmpty()){
+            return stack;
+        }
         for(Point2D i:this.BST){
             if(i.x()>=rect.xmin() && i.x()<=rect.xmax() && i.y()>=rect.ymin() && i.y()<=rect.ymax()){
                 stack.push(i);
@@ -67,16 +73,16 @@ public class PointSET {
     }
 
     public static void main(String[] args) {
-        PointSET set = new PointSET();
-        set.insert(new Point2D(0.4, 0.4));
-        set.insert(new Point2D(0.2, 0.4));
-        set.insert(new Point2D(0.7, 0.8));
-        set.insert(new Point2D(0.9, 0.9));
-        for(Point2D i:set.range(new RectHV(0.1, 0.1, 0.6, 0.6))){
-            System.out.println(i);
-        }
-        // System.out.println(set.nearest(new Point2D(0, 0)));
-        // set.insert(new Point2D(0.0, 0.0));
-        set.draw();
+        // PointSET set = new PointSET();
+        // set.insert(new Point2D(0.4, 0.4));
+        // set.insert(new Point2D(0.2, 0.4));
+        // set.insert(new Point2D(0.7, 0.8));
+        // set.insert(new Point2D(0.9, 0.9));
+        // for(Point2D i:set.range(new RectHV(0.1, 0.1, 0.6, 0.6))){
+        //     System.out.println(i);
+        // }
+        // // System.out.println(set.nearest(new Point2D(0, 0)));
+        // // set.insert(new Point2D(0.0, 0.0));
+        // set.draw();
     }
 }
