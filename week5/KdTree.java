@@ -121,9 +121,31 @@ public class KdTree{
         draw(cur.rt,!orien);
     }
 
-    public Point2D nearest(Point2D p){
+    public Point2D nearest(Point2D p){ 
+        return nearest(this.root,p,this.root.p);
+    }
+
+    private Point2D nearest(Node cur,Point2D p,Point2D min){
+        if(cur==null || min.distanceTo(p)<cur.rect.distanceTo(p)){
+            return min;
+        }
+        if(cur.p.distanceTo(p)<min.distanceTo(p)){
+            min = cur.p;
+        }
+        // if(cur.lb !=null && cur.lb.rect.contains(p)){
+        //     min = nearest(cur.lb,p,min);
+        //     if(cur.rt!=null){
+        //         min = nearest(cur.rt,p,min);
+        //     }
+           
+        // } else {
+        //     min = nearest(cur.rt, p, min);
+        //     min = nearest(cur.lb,p,min);
+        // }
+        min = nearest(cur.lb,p,min);
+        min = nearest(cur.rt,p,min);
+        return min;
         
-        return new Point2D(0, 0);
     }
 
 
@@ -160,6 +182,7 @@ public class KdTree{
         }
         System.out.println(tree.size());
         tree.draw();
+        System.out.println(tree.nearest(new Point2D(0.8, 0.85)));
         System.out.println(tree.contains(new Point2D(1, 0.5)));
 
     }
