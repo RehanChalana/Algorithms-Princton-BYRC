@@ -73,16 +73,16 @@ public class PointSET {
     }
 
     public static void main(String[] args) {
-        PointSET set = new PointSET();
-        set.insert(new Point2D(0.4, 0.4));
-        set.insert(new Point2D(0.2, 0.4));
-        set.insert(new Point2D(0.7, 0.8));
-        set.insert(new Point2D(0.9, 0.9));
-        for(Point2D i:set.range(new RectHV(0.1, 0.1, 0.6, 0.6))){
-            System.out.println(i);
-        }
-        // System.out.println(set.nearest(new Point2D(0, 0)));
-        // set.insert(new Point2D(0.0, 0.0));
-        set.draw();
+        // PointSET set = new PointSET();
+        // set.insert(new Point2D(0.4, 0.4));
+        // set.insert(new Point2D(0.2, 0.4));
+        // set.insert(new Point2D(0.7, 0.8));
+        // set.insert(new Point2D(0.9, 0.9));
+        // for(Point2D i:set.range(new RectHV(0.1, 0.1, 0.6, 0.6))){
+        //     System.out.println(i);
+        // }
+        // // System.out.println(set.nearest(new Point2D(0, 0)));
+        // // set.insert(new Point2D(0.0, 0.0));
+        // set.draw();
     }
 }
