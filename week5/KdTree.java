@@ -37,13 +37,30 @@ public class KdTree{
         if(p==null){
             throw new java.lang.IllegalArgumentException();
         }
-        root = insert(root, p, true,new RectHV(0,0,1,1));
+        root = insert(root, p, true,null);
     }
 
-    private Node insert(Node cur,Point2D p,boolean orien,RectHV rect){
+    private Node insert(Node cur,Point2D p,boolean orien,Node parent){
         if(cur==null){
             this.size++;
-            return new Node(p,rect);
+            RectHV newRec;
+            if(parent==null){
+                return new Node(p, new RectHV(0, 0, 1, 1));
+            }
+            if(!orien){
+                if(p.x()>=parent.p.x()){
+                    newRec = new RectHV(parent.p.x(), parent.rect.ymin(), parent.rect.xmax(), parent.rect.ymax());
+                } else{
+                    newRec = new RectHV(parent.rect.xmin(), parent.rect.ymin(), parent.p.x(), parent.rect.ymax());
+                }
+            } else{
+                if(p.y()>=parent.p.y()){
+                    newRec = new RectHV(parent.rect.xmin(), parent.p.y(), parent.rect.xmax(), parent.rect.ymax());
+                } else{
+                    newRec = new RectHV(parent.rect.xmin(), parent.rect.ymin(), parent.rect.xmax(), parent.p.y());
+                }
+            }
+            return new Node(p,newRec);
         }
         if(cur.p.equals(p)){
             return cur;
@@ -55,22 +72,22 @@ public class KdTree{
              cmp = p.y()-cur.p.y();
         }
         if(cmp<0){
-            RectHV childRec;
-            if(orien){
-                childRec = new RectHV(cur.rect.xmin(), cur.rect.ymin(), cur.p.x(), cur.rect.ymax());
-            } else{
-                childRec = new RectHV(cur.rect.xmin(), cur.rect.ymin(), cur.rect.xmax(), cur.p.y());
-            }
-            cur.lb = insert(cur.lb, p, !orien,childRec);
+            // RectHV childRec;
+            // if(orien){
+            //     childRec = new RectHV(cur.rect.xmin(), cur.rect.ymin(), cur.p.x(), cur.rect.ymax());
+            // } else{
+            //     childRec = new RectHV(cur.rect.xmin(), cur.rect.ymin(), cur.rect.xmax(), cur.p.y());
+            // }
+            cur.lb = insert(cur.lb, p, !orien,cur);
         }
         else if(cmp>=0){
-            RectHV childRec;
-            if(orien){
-                childRec = new RectHV(cur.p.x(), cur.rect.ymin(), cur.rect.xmax(), cur.rect.ymax());
-            } else{
-                childRec = new RectHV(cur.rect.xmin(), cur.p.y(), cur.rect.xmax(), cur.rect.ymax());
-            }
-            cur.rt = insert(cur.rt, p, !orien,childRec);
+            // RectHV childRec;
+            // if(orien){
+            //     childRec = new RectHV(cur.p.x(), cur.rect.ymin(), cur.rect.xmax(), cur.rect.ymax());
+            // } else{
+            //     childRec = new RectHV(cur.rect.xmin(), cur.p.y(), cur.rect.xmax(), cur.rect.ymax());
+            // }
+            cur.rt = insert(cur.rt, p, !orien,cur);
         }
         return cur;
     }
@@ -169,17 +186,6 @@ public class KdTree{
                 }
             }
         }
-        // else if(cur.lb.p.distanceTo(p)<cur.rt.p.distanceTo(p)){
-        //     closest = nearest(cur.lb, p, closest);
-        //     if(!(closest.distanceTo(p)<cur.rt.rect.distanceTo(p))){
-        //         closest = nearest(cur.rt,p,closest);
-        //     } 
-        // } else{
-        //     closest = nearest(cur.rt,p,closest);
-        //     if(!(closest.distanceTo(p)<cur.lb.rect.distanceTo(p))){
-        //         closest = nearest(cur.lb,p,closest);
-        //     }
-        // }
         return closest;   
     }
 
@@ -207,21 +213,21 @@ public class KdTree{
     }
 
     public static void main(String[] args) {
-        // KdTree tree = new KdTree();
-        // tree.insert(new Point2D(0.7, 0.2));
-        // tree.insert(new Point2D(0.5, 0.4));
-        // tree.insert(new Point2D(0.2, 0.3));
-        // tree.insert(new Point2D(0.4, 0.7));
-        // tree.insert(new Point2D(0.9, 0.6));
-        // // // tree.insert(new Point2D(0.1, 0.5));
-        // // // tree.insert(new Point2D(0.3, 0.4));
-        // // // for(Point2D i:tree.range(new RectHV(0.5, 0.6, 1, 1))){
-        // // //     System.out.println(i);
-        // // // }
-        // // // System.out.println(tree.size());
-        // // tree.draw();
-        // System.out.println(tree.nearest(new Point2D(0.92, 0.15)));
-        // // System.out.println(tree.contains(new Point2D(1, 0.5)));
+        KdTree tree = new KdTree();
+        tree.insert(new Point2D(0.7, 0.2));
+        tree.insert(new Point2D(0.5, 0.4));
+        tree.insert(new Point2D(0.2, 0.3));
+        tree.insert(new Point2D(0.4, 0.7));
+        tree.insert(new Point2D(0.9, 0.6));
+        // // tree.insert(new Point2D(0.1, 0.5));
+        // // tree.insert(new Point2D(0.3, 0.4));
+        // // for(Point2D i:tree.range(new RectHV(0.5, 0.6, 1, 1))){
+        // //     System.out.println(i);
+        // // }
+        // // System.out.println(tree.size());
+        tree.draw();
+        System.out.println(tree.nearest(new Point2D(0.92, 0.15)));
+        // System.out.println(tree.contains(new Point2D(1, 0.5)));
     }
 
 }
