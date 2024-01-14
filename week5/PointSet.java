@@ -44,6 +44,9 @@ public class PointSET {
         if(p==null){
             throw new java.lang.IllegalArgumentException();
         }
+        if(this.BST.isEmpty()){
+            return null;
+        }
         Point2D nearest=this.BST.first();
         for(Point2D i:this.BST){
             if(p.distanceTo(i)<p.distanceTo(nearest)){
